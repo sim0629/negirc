@@ -8,6 +8,35 @@ namespace IRCclient
 {
 	public partial class ChannelPage : TabPage
 	{
+		private string cutat(string str)
+		{
+			if (str.StartsWith("@")) return str.Substring(1);
+			else return str;
+		}
+		public string nextUser(string bass, string cur)
+		{
+			int index = 0;
+			for (; index < userList.Items.Count; index++)
+			{
+				string id = cutat((string)userList.Items[index]);
+				if (id == cur) break;
+			}
+			index++;
+			if (index >= userList.Items.Count) index = 0;
+			for (; index < userList.Items.Count; index++)
+			{
+				string id = cutat((string)userList.Items[index]);
+				if (id.ToLower().StartsWith(bass.ToLower()))
+					return id;
+			}
+			for (int i = 0; i < userList.Items.Count; i++)
+			{
+				string id = cutat((string)userList.Items[i]);
+				if (id.ToLower().StartsWith(bass.ToLower()))
+					return id;
+			}
+			return null;
+		}
 		public string selectedUser()
 		{
 			if (userList.SelectedItems.Count == 0) return "";
@@ -68,13 +97,13 @@ namespace IRCclient
 					if (tChanged < 2)
 					{
 						tChanged = 2;
-						Util.Refresh(con.tabControl, false);
+						Util.Refresh(MainForm.thisfrm.tabControl, false);
 					}
 				}
 				else if (tChanged == 0)
 				{
 					tChanged = 1;
-					Util.Refresh(con.tabControl, false);
+					Util.Refresh(MainForm.thisfrm.tabControl, false);
 				}
 			}
 		}

@@ -8,7 +8,7 @@ namespace IRCclient
 {
 	public partial class ChannelPage
 	{
-		public ChannelPage(string channel, ConnectionPage con)
+		public ChannelPage(string channel)
 			: base(channel)
 		{
 			this.tInf = new RichTextBox();
@@ -21,7 +21,7 @@ namespace IRCclient
 			this.tInf.TabIndex = 1;
 			this.tInf.Multiline = false;
 			this.tInf.Height = 21;
-			this.tInf.LinkClicked += new LinkClickedEventHandler(con.tLog_LinkClicked);
+			this.tInf.LinkClicked += new LinkClickedEventHandler(MainForm.thisfrm.tLog_LinkClicked);
 			this.tInf.PreviewKeyDown += new PreviewKeyDownEventHandler(MainForm.thisfrm.tLine_PreviewKeyDown);
 			this.tInf.TabStop = false;
 
@@ -36,7 +36,7 @@ namespace IRCclient
 			this.tChan.Text = "";
 			this.tChan.ReadOnly = true;
 			this.tChan.BackColor = Color.White;
-			this.tChan.LinkClicked += new LinkClickedEventHandler(con.tLog_LinkClicked);
+			this.tChan.LinkClicked += new LinkClickedEventHandler(MainForm.thisfrm.tLog_LinkClicked);
 			this.tChan.PreviewKeyDown += new PreviewKeyDownEventHandler(MainForm.thisfrm.tLine_PreviewKeyDown);
 			this.tChan.TabStop = false;
 
@@ -44,7 +44,7 @@ namespace IRCclient
 			this.userList.Dock = DockStyle.Fill;
 			this.userList.Sorted = true;
 			this.userList.IntegralHeight = false;
-			this.userList.ContextMenuStrip = con.userContext;
+			this.userList.ContextMenuStrip = MainForm.thisfrm.userContext;
 			this.userList.SelectionMode = SelectionMode.MultiExtended;
 			this.userList.PreviewKeyDown += new PreviewKeyDownEventHandler(MainForm.thisfrm.tLine_PreviewKeyDown);
 			this.userList.TabStop = false;
@@ -61,7 +61,6 @@ namespace IRCclient
 				this.Controls.Add(this.tChan);
 			this.Padding = new Padding(3);
 
-			this.con = con;
 			this.channel = channel;
 			this.topic = "";
 			this.chanmode.init();
@@ -69,7 +68,6 @@ namespace IRCclient
 			this.selected = false;
 		}
 
-		ConnectionPage con;
 		private RichTextBox tInf = null;
 		private RichTextBox tChan = null;
 		private SplitContainer splCon = null;

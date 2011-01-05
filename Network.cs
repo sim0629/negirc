@@ -13,7 +13,7 @@ namespace IRCclient
 {
 	public class Network
 	{
-		ConnectionPage con;
+		ConnectionGroup con;
 		private TcpClient client = null;
 		private NetworkStream stream = null;
 		private StreamReader reader = null;
@@ -22,7 +22,7 @@ namespace IRCclient
 
 		public string nick = null;
 
-		public Network(ConnectionPage con)
+		public Network(ConnectionGroup con)
 		{
 			this.con = con;
 		}

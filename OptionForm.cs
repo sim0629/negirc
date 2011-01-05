@@ -12,7 +12,7 @@ namespace IRCclient
 	public partial class OptionForm : Form
 	{
 		public static OptionForm thisfrm = null;
-		private ConnectionPage con;
+		private ConnectionGroup con;
 		public List<ServerGroup> Groups;
 		public string usermsg;
 		public string qmsg;
@@ -155,7 +155,7 @@ namespace IRCclient
 			}
 		}
 
-		public void Open(ConnectionPage con)
+		public void Open(ConnectionGroup con)
 		{
 			tGroup.SelectedIndex = -1;
 			this.con = con;

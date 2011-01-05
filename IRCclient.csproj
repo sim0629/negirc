@@ -55,12 +55,7 @@
     <Compile Include="ChannelPage.Designer.cs">
       <DependentUpon>ChannelPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConnectionPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ConnectionPage.Designer.cs">
-      <DependentUpon>ConnectionPage.cs</DependentUpon>
-    </Compile>
+    <Compile Include="ConnectionGroup.cs" />
     <Compile Include="FavoriteForm.cs">
       <SubType>Form</SubType>
     </Compile>
