@@ -8,7 +8,7 @@ namespace IRCclient
 {
 	public static class Util
 	{
-		public const string VER = "1.1.2.60";
+		public const string VER = "1.1.2.61";
 		public const string clientURL = "http://tail41.snucse.org/program/";
 		public static Color levelColor(int level)
 		{
@@ -143,16 +143,13 @@ namespace IRCclient
 		private static void uaddItem(Control list, string text)
 		{
 			lock (list)
-				if (list is ListBox)
-				{
-					ListBox llist = (ListBox)list;
-					if (!llist.Items.Contains(text)) llist.Items.Add(text);
-				}
-				else if (list is ComboBox)
-				{
-					ComboBox clist = (ComboBox)list;
-					if (!clist.Items.Contains(text)) clist.Items.Add(text);
-				}
+			{
+				ListBox llist = list as ListBox;
+				if (llist != null && !llist.Items.Contains(text)) llist.Items.Add(text);
+
+				ComboBox clist = list as ComboBox;
+				if (clist != null && !clist.Items.Contains(text)) clist.Items.Add(text);
+			}
 		}
 		public static void addItem(ListControl list, string text)
 		{
@@ -190,6 +187,15 @@ namespace IRCclient
 				tab.Invoke((tabHandler)delegate(TabPage p)
 				{ tab.SelectedTab = p; }, page);
 			else tab.SelectedTab = page;
+		}
+
+		public static bool ValidateServerCertificate(
+			object sender,
+			System.Security.Cryptography.X509Certificates.X509Certificate certificate,
+			System.Security.Cryptography.X509Certificates.X509Chain chain,
+			System.Net.Security.SslPolicyErrors sslPolicyErrors)
+		{
+			return true;
 		}
 	}
 }

@@ -383,7 +383,7 @@
 			this.DoubleBuffered = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
-			this.Text = "Minus One IRC-[ver] by 2009.11.29-2011.1.5 Yoshi-TS4";
+			this.Text = "Minus One IRC-[ver] by 2009.11.29-2011.1.24 Yoshi-TS4";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.panel1.ResumeLayout(false);

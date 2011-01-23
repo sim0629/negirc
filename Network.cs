@@ -16,6 +16,7 @@ namespace IRCclient
 		ConnectionGroup con;
 		private TcpClient client = null;
 		private NetworkStream stream = null;
+		private SslStream sstream = null;
 		private StreamReader reader = null;
 		private StreamWriter writer = null;
 		Thread Receiver;
@@ -46,7 +47,7 @@ namespace IRCclient
 
 				if (SSL)
 				{
-					SslStream sstream = new SslStream(stream);
+					sstream = new SslStream(stream, false, new RemoteCertificateValidationCallback(Util.ValidateServerCertificate));
 					sstream.AuthenticateAsClient(host);
 					sstream.WriteTimeout = 5000;
 					reader = new StreamReader(sstream, encode);
@@ -66,6 +67,7 @@ namespace IRCclient
 			catch (Exception e)
 			{
 				Console.Out.WriteLine(e.Message);
+				Disconnect();
 				return false;
 			}
 		}
@@ -76,12 +78,16 @@ namespace IRCclient
 			{
 				if (client.Connected)
 				{
-					if (con.GetQmsg() == "")
-						SendData("QUIT", true);
-					else SendData("QUIT :" + con.GetQmsg(), true);
-					if (reader != null) reader.Close();
-					if (writer != null) writer.Close();
-					if (stream != null) stream.Close();
+					if (writer != null)
+					{
+						if (con.GetQmsg() == "")
+							SendData("QUIT", true);
+						else SendData("QUIT :" + con.GetQmsg(), true);
+						writer.Close(); writer = null;
+					}
+					if (reader != null) { reader.Close(); reader = null; }
+					if (stream != null) { stream.Close(); stream = null; }
+					if (sstream != null) { sstream.Close(); sstream = null; }
 					client.Close();
 				}
 			}
@@ -146,6 +152,7 @@ namespace IRCclient
 		public void SendData(string msg, bool writelog)
 		{
 			if (msg == null || msg == "") return;
+			if (writer == null || writer.BaseStream == null) return;
 			try
 			{
 				bool bcontent = false;

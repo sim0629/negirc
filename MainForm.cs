@@ -162,18 +162,18 @@ namespace IRCclient
 			tLineSelect();
 
 			foreach (TabPage page in tabControl.TabPages)
-				if(page is ChannelPage)
-				{
-					ChannelPage pChan = (ChannelPage)page;
+			{
+				ChannelPage pChan = page as ChannelPage;
+				if (pChan != null)
 					pChan.selected = false;
-				}
+			}
 
-			if (tabControl.SelectedTab is ChannelPage)
+			ChannelPage sChan = tabControl.SelectedTab as ChannelPage;
+			if (sChan != null)
 			{
 				this.ContextMenuStrip = tabControl.ContextMenuStrip = chanContext;
-				ChannelPage pChan = (ChannelPage)tabControl.SelectedTab;
-				pChan.selected = true;
-				pChan.tChanged = 0;
+				sChan.selected = true;
+				sChan.tChanged = 0;
 			}
 			else this.ContextMenuStrip = tabControl.ContextMenuStrip = groupContext;
 		}
@@ -185,10 +185,9 @@ namespace IRCclient
 				g.FillRectangle(Brushes.White, e.Bounds);
 			else
 			{
-				TabPage page = (TabPage)tabControl.Controls[e.Index];
-				if(page is ChannelPage)
+				ChannelPage pChan = tabControl.Controls[e.Index] as ChannelPage;
+				if(pChan != null)
 				{
-					ChannelPage pChan = (ChannelPage)page;
 					if (pChan.tChanged == 1) tbrush = Brushes.Navy;
 					else if (pChan.tChanged == 2) tbrush = Brushes.Blue;
 				}
@@ -311,9 +310,9 @@ namespace IRCclient
 			}
 			else if (e.KeyCode == Keys.Tab)
 			{
-				if (tabControl.SelectedTab.Text.StartsWith("#") && tabControl.SelectedTab is ChannelPage)
+				ChannelPage pChan = tabControl.SelectedTab as ChannelPage;
+				if (pChan != null && tabControl.SelectedTab.Text.StartsWith("#"))
 				{
-					ChannelPage pChan = (ChannelPage)tabControl.SelectedTab;
 					if (tsearch == "")
 						tsearch = tLine.Text;
 
@@ -338,6 +337,7 @@ namespace IRCclient
 				System.Diagnostics.Process.Start(e.LinkText);
 			}
 			catch { }
+			tLineSelect();
 		}
 
 		private void nNewServer_Click(object sender, EventArgs e)
@@ -423,13 +423,14 @@ namespace IRCclient
 		}
 		private void bClose_Click(object sender, EventArgs e)
 		{
-			if (tabControl.SelectedTab is ChannelPage)
+			ChannelPage pChan = tabControl.SelectedTab as ChannelPage;
+			if (pChan != null)
 			{
-				string temp = tabControl.SelectedTab.Text;
+				string temp = pChan.Text;
 				if (temp.StartsWith("#"))
 					SelectedGroup.net.SendData("PART " + temp, false);
 				else
-					SelectedGroup.part((ChannelPage)tabControl.SelectedTab);
+					SelectedGroup.part(pChan);
 			}
 		}
 

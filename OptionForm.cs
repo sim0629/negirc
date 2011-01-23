@@ -79,13 +79,13 @@ namespace IRCclient
 					}
 				}
 				if (Groups.Count == 0)
-					Groups.Add(new ServerGroup("UriIRC", Encoding.UTF8, new List<string> { "irc.uriirc.org/16667" }, new List<string>()));
+					Groups.Add(new ServerGroup("Freenode", Encoding.UTF8, new List<string> { "irc.freenode.net/8000", "irc.freenode.net&/7000" }, new List<string>()));
 			}
 			catch (Exception)
 			{
 				Groups = new List<ServerGroup>();
 
-				Groups.Add(new ServerGroup("UriIRC", Encoding.UTF8, new List<string> { "irc.uriirc.org/16667", "115.92.130.250/16667" }, new List<string>()));
+				Groups.Add(new ServerGroup("UriIRC", Encoding.UTF8, new List<string> { "irc.uriirc.org&/16663", "irc.uriirc.org/16667" }, new List<string>()));
 				Groups.Add(new ServerGroup("HanIRC", Encoding.GetEncoding(949), new List<string> { "irc.hanirc.org/6664", "ddos.hanirc.org/6664", "purple.hanirc.org/6664", "64.71.156.44/6664" }, new List<string>()));
 				Groups.Add(new ServerGroup("Freenode", Encoding.UTF8, new List<string> { "irc.freenode.net/8000", "irc.freenode.net&/7000" }, new List<string>()));
 				cEncode.SelectedIndex = 1;

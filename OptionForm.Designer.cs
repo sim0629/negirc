@@ -54,6 +54,7 @@
 			this.cLog = new System.Windows.Forms.CheckBox();
 			this.tDefNick = new System.Windows.Forms.TextBox();
 			this.lDefNick = new System.Windows.Forms.Label();
+			this.lSSL = new System.Windows.Forms.Label();
 			this.panel1.SuspendLayout();
 			this.tabOption.SuspendLayout();
 			this.pConnect.SuspendLayout();
@@ -87,7 +88,7 @@
 			this.panel1.Controls.Add(this.bOK);
 			this.panel1.Controls.Add(this.bCancel);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(0, 178);
+			this.panel1.Location = new System.Drawing.Point(0, 218);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(314, 34);
 			this.panel1.TabIndex = 3;
@@ -101,11 +102,12 @@
 			this.tabOption.Location = new System.Drawing.Point(0, 0);
 			this.tabOption.Name = "tabOption";
 			this.tabOption.SelectedIndex = 0;
-			this.tabOption.Size = new System.Drawing.Size(314, 178);
+			this.tabOption.Size = new System.Drawing.Size(314, 218);
 			this.tabOption.TabIndex = 0;
 			// 
 			// pConnect
 			// 
+			this.pConnect.Controls.Add(this.lSSL);
 			this.pConnect.Controls.Add(this.bcEncode);
 			this.pConnect.Controls.Add(this.bFavorite);
 			this.pConnect.Controls.Add(this.bRemoveServer);
@@ -119,7 +121,7 @@
 			this.pConnect.Location = new System.Drawing.Point(4, 22);
 			this.pConnect.Name = "pConnect";
 			this.pConnect.Padding = new System.Windows.Forms.Padding(3);
-			this.pConnect.Size = new System.Drawing.Size(306, 152);
+			this.pConnect.Size = new System.Drawing.Size(306, 192);
 			this.pConnect.TabIndex = 0;
 			this.pConnect.Text = "Server";
 			this.pConnect.UseVisualStyleBackColor = true;
@@ -136,7 +138,7 @@
 			// 
 			// bFavorite
 			// 
-			this.bFavorite.Location = new System.Drawing.Point(12, 125);
+			this.bFavorite.Location = new System.Drawing.Point(12, 156);
 			this.bFavorite.Name = "bFavorite";
 			this.bFavorite.Size = new System.Drawing.Size(100, 21);
 			this.bFavorite.TabIndex = 7;
@@ -146,7 +148,7 @@
 			// 
 			// bRemoveServer
 			// 
-			this.bRemoveServer.Location = new System.Drawing.Point(228, 125);
+			this.bRemoveServer.Location = new System.Drawing.Point(228, 156);
 			this.bRemoveServer.Name = "bRemoveServer";
 			this.bRemoveServer.Size = new System.Drawing.Size(70, 21);
 			this.bRemoveServer.TabIndex = 9;
@@ -156,7 +158,7 @@
 			// 
 			// bAddServer
 			// 
-			this.bAddServer.Location = new System.Drawing.Point(152, 125);
+			this.bAddServer.Location = new System.Drawing.Point(152, 156);
 			this.bAddServer.Name = "bAddServer";
 			this.bAddServer.Size = new System.Drawing.Size(70, 21);
 			this.bAddServer.TabIndex = 8;
@@ -297,7 +299,7 @@
 			this.pOther.Location = new System.Drawing.Point(4, 22);
 			this.pOther.Name = "pOther";
 			this.pOther.Padding = new System.Windows.Forms.Padding(3);
-			this.pOther.Size = new System.Drawing.Size(306, 212);
+			this.pOther.Size = new System.Drawing.Size(306, 152);
 			this.pOther.TabIndex = 6;
 			this.pOther.Text = "Other";
 			this.pOther.UseVisualStyleBackColor = true;
@@ -331,13 +333,22 @@
 			this.lDefNick.TabIndex = 8;
 			this.lDefNick.Text = "Default Nick";
 			// 
+			// lSSL
+			// 
+			this.lSSL.Location = new System.Drawing.Point(12, 121);
+			this.lSSL.Name = "lSSL";
+			this.lSSL.Size = new System.Drawing.Size(286, 26);
+			this.lSSL.TabIndex = 10;
+			this.lSSL.Text = "To connect with SSL, put && after host name\r\n(e.g. irc.freenode.net&&/7000)";
+			this.lSSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// OptionForm
 			// 
 			this.AcceptButton = this.bOK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.bCancel;
-			this.ClientSize = new System.Drawing.Size(314, 212);
+			this.ClientSize = new System.Drawing.Size(314, 252);
 			this.Controls.Add(this.tabOption);
 			this.Controls.Add(this.panel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -387,5 +398,6 @@
 		private System.Windows.Forms.CheckBox cLog;
 		private System.Windows.Forms.TextBox tDefNick;
 		private System.Windows.Forms.Label lDefNick;
+		private System.Windows.Forms.Label lSSL;
 	}
 }
