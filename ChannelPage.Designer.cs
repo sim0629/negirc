@@ -88,6 +88,8 @@ namespace IRCclient
 			public string getMode()
 			{
 				string result = "";
+				for (int i = 'A'; i <= 'Z'; i++)
+					if (mode[i]) result += (char)i;
 				for (int i = 'a'; i <= 'z'; i++)
 					if (mode[i] && i != 'b') result += (char)i;
 				if (mode['k']) result += " " + key;

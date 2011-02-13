@@ -205,7 +205,7 @@
 			this.bNewServer.Name = "bNewServer";
 			this.bNewServer.Size = new System.Drawing.Size(184, 22);
 			this.bNewServer.Text = "New server window";
-			this.bNewServer.Click += new System.EventHandler(this.nNewServer_Click);
+			this.bNewServer.Click += new System.EventHandler(this.addNewTab);
 			// 
 			// toolStripMenuItem1
 			// 
@@ -354,6 +354,7 @@
 			// 
 			// bBan
 			// 
+			this.bBan.Enabled = false;
 			this.bBan.Name = "bBan";
 			this.bBan.Size = new System.Drawing.Size(153, 22);
 			this.bBan.Text = "Ban";
@@ -383,7 +384,7 @@
 			this.DoubleBuffered = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
-			this.Text = "Minus One IRC-[ver] by 2009.11.29-2011.1.24 Yoshi-TS4";
+			this.Text = "Minus One IRC-[ver] by 2009.11.29-2011.2.14 Yoshi-TS4";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.panel1.ResumeLayout(false);

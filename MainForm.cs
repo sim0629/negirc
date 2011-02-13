@@ -15,7 +15,7 @@ namespace IRCclient
 		private List<ConnectionGroup> connectionGroups = new List<ConnectionGroup>();
 		private ConnectionGroup selectedGroup = null;
 		private int selectedGroupIndex = -1;
-		private ConnectionGroup SelectedGroup
+		private ConnectionGroup SelectedGroup	// SelectedGroup
 		{
 			get
 			{
@@ -43,7 +43,7 @@ namespace IRCclient
 				tabControl.SelectedTab = selectedGroup.pLog;
 			}
 		}
-		private int SelectedGroupIndex
+		private int SelectedGroupIndex	// Index in connectionGroups
 		{
 			get
 			{
@@ -66,15 +66,15 @@ namespace IRCclient
 		{
 			get
 			{
-				return connectionGroups.IndexOf(SelectedGroup);
+				return tabControl.TabPages.IndexOf(SelectedGroup.pLog);
 			}
 		}
 		private int NextGroupLocation(ConnectionGroup cgroup)
 		{
-			return connectionGroups.IndexOf(cgroup) + cgroup.channelPages.Count + 1;
+			return tabControl.TabPages.IndexOf(cgroup.pLog) + cgroup.channelPages.Count + 1;
 		}
 
-		string tsearch = "";
+		string tsearch = null;
 
 		public MainForm()
 		{
@@ -313,7 +313,7 @@ namespace IRCclient
 				ChannelPage pChan = tabControl.SelectedTab as ChannelPage;
 				if (pChan != null && tabControl.SelectedTab.Text.StartsWith("#"))
 				{
-					if (tsearch == "")
+					if (tsearch == null)
 						tsearch = tLine.Text;
 
 					string result = pChan.nextUser(tsearch, tLine.Text);
@@ -322,7 +322,7 @@ namespace IRCclient
 					tLine.Select(tLine.TextLength, 0);
 				}
 			}
-			else tsearch = "";
+			else tsearch = null;
 		}
 
 		private void groupContext_Opening(object sender, CancelEventArgs e)
@@ -340,27 +340,7 @@ namespace IRCclient
 			tLineSelect();
 		}
 
-		private void nNewServer_Click(object sender, EventArgs e)
-		{
-			addNewTab();
-		}
-		private void bCloseServer_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				if (SelectedGroup.connected != Util.ConnectedState.Disconnected)
-					SelectedGroup.Disconnect();
-				int begin = tabControl.Controls.IndexOf(SelectedGroup.pLog);
-				int num = NextGroupLocation(SelectedGroup) - begin;
-				connectionGroups.Remove(SelectedGroup);
-				for (int i = 0; i < num; i++)
-					Util.removeTab(tabControl, begin);
-				tabControl.SelectedIndex = begin;
-			}
-			catch { }
-		}
-
-		private void addNewTab()
+		private void addNewTab(object sender = null, EventArgs e = null)
 		{
 			ServerGroup tba = OptionForm.thisfrm.Groups[0];
 			foreach (ServerGroup sgroup in OptionForm.thisfrm.Groups)
@@ -384,6 +364,21 @@ namespace IRCclient
 			tabControl.Controls.Add(nGroup.pLog);
 			connectionGroups.Add(nGroup);
 			SelectedGroup = nGroup;
+		}
+		private void bCloseServer_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (SelectedGroup.connected != Util.ConnectedState.Disconnected)
+					SelectedGroup.Disconnect();
+				int begin = tabControl.Controls.IndexOf(SelectedGroup.pLog);
+				int num = NextGroupLocation(SelectedGroup) - begin;
+				connectionGroups.Remove(SelectedGroup);
+				for (int i = 0; i < num; i++)
+					Util.removeTab(tabControl, begin);
+				tabControl.SelectedIndex = begin;
+			}
+			catch { }
 		}
 
 		public void tLineSelect()
