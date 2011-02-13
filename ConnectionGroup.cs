@@ -119,7 +119,7 @@ namespace IRCclient
 				}
 			if (pChan == null)
 			{
-				pChan = new ChannelPage(channel);
+				pChan = new ChannelPage(this, channel);
 				channelPages.Add(pChan);
 				MainForm.thisfrm.InsertChan(this, pChan);
 			}
@@ -277,8 +277,9 @@ namespace IRCclient
 			}
 			else
 			{
-				if (!channel.EndsWith("\t"))
+				if (channel != null)
 					net.SendData("PRIVMSG " + channel + " :" + line, false);
+				else net.SendData(line, true);
 			}
 		}
 

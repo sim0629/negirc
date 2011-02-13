@@ -8,7 +8,7 @@ namespace IRCclient
 {
 	public partial class ChannelPage
 	{
-		public ChannelPage(string channel)
+		public ChannelPage(ConnectionGroup group, string channel)
 			: base(channel)
 		{
 			this.tInf = new RichTextBox();
@@ -61,18 +61,17 @@ namespace IRCclient
 				this.Controls.Add(this.tChan);
 			this.Padding = new Padding(3);
 
-			this.channel = channel;
 			this.topic = "";
 			this.chanmode.init();
 			this.tChanged = 0;
 			this.selected = false;
+			this.group = group;
 		}
 
 		private RichTextBox tInf = null;
 		private RichTextBox tChan = null;
 		private SplitContainer splCon = null;
 		private ListBox userList = null;
-		private string channel = null;
 		private string topic = null;
 		struct modes
 		{
@@ -100,5 +99,6 @@ namespace IRCclient
 		modes chanmode;
 		public int tChanged;			//0:no change(black) 1:system(Navy) 2:talk(Blue)
 		public bool selected;
+		public ConnectionGroup group;
 	}
 }

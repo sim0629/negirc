@@ -141,7 +141,7 @@ namespace IRCclient
 		}
 		public void setInf()
 		{
-			Util.setText(tInf, this.channel + " [" + userList.Items.Count + "] " + chanmode.getMode() + (topic != "" ? ": " + topic : ""));
+			Util.setText(tInf, this.Text + " [" + userList.Items.Count + "] " + chanmode.getMode() + (topic != "" ? ": " + topic : ""));
 		}
 	}
 }

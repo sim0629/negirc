@@ -13,65 +13,55 @@ namespace IRCclient
 	{
 		public static MainForm thisfrm = null;
 		private List<ConnectionGroup> connectionGroups = new List<ConnectionGroup>();
-		private ConnectionGroup selectedGroup = null;
-		private int selectedGroupIndex = -1;
 		private ConnectionGroup SelectedGroup	// SelectedGroup
 		{
 			get
 			{
-				if (selectedGroup != null) return selectedGroup;
+				TabPage sel = tabControl.SelectedTab;
+				if (sel is ChannelPage) return ((ChannelPage)sel).group;
 				else
 				{
-					for (int i = 1; i < connectionGroups.Count; i++)
+					for (int i = 0; i < connectionGroups.Count; i++)
 					{
-						if (tabControl.SelectedIndex < tabControl.Controls.IndexOf(connectionGroups[i].pLog))
-						{
-							selectedGroupIndex = i - 1;
-							selectedGroup = connectionGroups[selectedGroupIndex];
-							return selectedGroup;
-						}
+						if (sel == connectionGroups[i].pLog)
+							return connectionGroups[i];
 					}
-					selectedGroupIndex = connectionGroups.Count - 1;
-					selectedGroup = connectionGroups[selectedGroupIndex];
-					return selectedGroup;
+					return null;
 				}
 			}
 			set
 			{
-				selectedGroup = value;
-				selectedGroupIndex = -1;
-				tabControl.SelectedTab = selectedGroup.pLog;
+				tabControl.SelectedTab = value.pLog;
 			}
 		}
 		private int SelectedGroupIndex	// Index in connectionGroups
 		{
 			get
 			{
-				if (selectedGroupIndex != -1) return selectedGroupIndex;
-				for (int i = 1; i < connectionGroups.Count; i++)
+				TabPage sel = tabControl.SelectedTab;
+				if (sel is ChannelPage) return connectionGroups.IndexOf(((ChannelPage)sel).group);
+				else
 				{
-					if (tabControl.SelectedIndex < tabControl.Controls.IndexOf(connectionGroups[i].pLog))
+					for (int i = 0; i < connectionGroups.Count; i++)
 					{
-						selectedGroupIndex = i - 1;
-						selectedGroup = connectionGroups[selectedGroupIndex];
-						return selectedGroupIndex;
+						if (sel == connectionGroups[i].pLog)
+							return i;
 					}
+					return -1;
 				}
-				selectedGroupIndex = connectionGroups.Count - 1;
-				selectedGroup = connectionGroups[selectedGroupIndex];
-				return selectedGroupIndex;
 			}
-		}
-		private int SelectedGroupLocation
-		{
-			get
+			set
 			{
-				return tabControl.TabPages.IndexOf(SelectedGroup.pLog);
+				tabControl.SelectedTab = connectionGroups[value].pLog;
 			}
 		}
-		private int NextGroupLocation(ConnectionGroup cgroup)
+		private int GroupLocation(ConnectionGroup cgroup)
 		{
-			return tabControl.TabPages.IndexOf(cgroup.pLog) + cgroup.channelPages.Count + 1;
+			return tabControl.TabPages.IndexOf(cgroup.pLog);
+		}
+		private int GroupEndLocation(ConnectionGroup cgroup)
+		{
+			return tabControl.TabPages.IndexOf(cgroup.pLog) + cgroup.channelPages.Count;
 		}
 
 		string tsearch = null;
@@ -155,8 +145,6 @@ namespace IRCclient
 		}
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			selectedGroup = null;
-			selectedGroupIndex = -1;
 			SetProperty(SelectedGroup, true);
 			SetProperty(SelectedGroup, false);
 			tLineSelect();
@@ -238,7 +226,9 @@ namespace IRCclient
 		{
 			if (e.KeyChar == (char)Keys.Enter && tLine.Text != "")
 			{
-				SelectedGroup.tLineEntered(tabControl.SelectedTab.Text, tLine.Text);
+				if (tabControl.SelectedTab is ChannelPage)
+					SelectedGroup.tLineEntered(tabControl.SelectedTab.Text, tLine.Text);
+				else SelectedGroup.tLineEntered(null, tLine.Text);
 				tLine.Clear();
 				e.Handled = true;
 			}
@@ -247,59 +237,89 @@ namespace IRCclient
 		{
 			if (e.Modifiers == Keys.Control)
 			{
-				if (e.KeyCode == Keys.B)
-					tLine.SelectedText += '';
-				else if (e.KeyCode == Keys.U)
-					tLine.SelectedText += '';
-				else if (e.KeyCode == Keys.R)
-					tLine.SelectedText += '';
-				else if (e.KeyCode == Keys.K)
-					tLine.SelectedText += '';
-				else if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9 && tabControl.TabCount > (e.KeyCode - Keys.D1))
+				if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
 					tabControl.SelectedIndex = e.KeyCode - Keys.D1;
-				else if (e.KeyCode == Keys.D0 && tabControl.TabCount > 9)
-					tabControl.SelectedIndex = 9;
-				else if (e.KeyCode == Keys.Tab)
-				{
-					if (tabControl.SelectedIndex == tabControl.TabCount - 1)
-						tabControl.SelectedIndex = 0;
-					else tabControl.SelectedIndex++;
-				}
+				else switch (e.KeyCode)
+					{
+						case Keys.B: tLine.SelectedText += ''; break;
+						case Keys.U: tLine.SelectedText += ''; break;
+						case Keys.R: tLine.SelectedText += ''; break;
+						case Keys.K: tLine.SelectedText += ''; break;
+						case Keys.D0: tabControl.SelectedIndex = 9; break;
+						case Keys.Tab:
+							if (tabControl.SelectedIndex == tabControl.TabCount - 1)
+								tabControl.SelectedIndex = 0;
+							else tabControl.SelectedIndex++;
+							break;
+					}
 			}
 			else if (e.Modifiers == (Keys.Control | Keys.Shift))
 			{
-				if (e.KeyCode == Keys.Tab)
-				{
-					if (tabControl.SelectedIndex == 0)
-						tabControl.SelectedIndex = tabControl.TabCount - 1;
-					else tabControl.SelectedIndex--;
-				}
-				else if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9 && tabControl.TabCount > (e.KeyCode - Keys.D1))
+				if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
 					tabControl.SelectedIndex = e.KeyCode - Keys.D1 + 10;
-				else if (e.KeyCode == Keys.D0 && tabControl.TabCount > 19)
-					tabControl.SelectedIndex = 19;
+				else switch (e.KeyCode)
+					{
+						case Keys.Tab:
+							if (tabControl.SelectedIndex == 0)
+								tabControl.SelectedIndex = tabControl.TabCount - 1;
+							else tabControl.SelectedIndex--;
+							break;
+						case Keys.D0: tabControl.SelectedIndex = 19; break;
+					}
 			}
 			else if (e.Modifiers == Keys.Alt)
 			{
-				if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9 && tabControl.TabCount > (e.KeyCode - Keys.D1))
+				if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
 					tabControl.SelectedIndex = e.KeyCode - Keys.D1;
-				else if (e.KeyCode == Keys.D0 && tabControl.TabCount > 9)
-					tabControl.SelectedIndex = 9;
-				else if (e.KeyCode == Keys.Left && tabControl.SelectedIndex > 0)
-					tabControl.SelectedIndex--;
-				else if (e.KeyCode == Keys.Right && tabControl.SelectedIndex < tabControl.TabCount - 1)
-					tabControl.SelectedIndex++;
+				else switch (e.KeyCode)
+					{
+						case Keys.D0: tabControl.SelectedIndex = 9; break;
+						case Keys.Left:
+							if (tabControl.SelectedIndex > 0)
+								tabControl.SelectedIndex--;
+							break;
+						case Keys.Right:
+							if (tabControl.SelectedIndex < tabControl.TabCount - 1)
+								tabControl.SelectedIndex++;
+							break;
+						case Keys.Q: tabControl.SelectedIndex = 10; break;
+						case Keys.W: tabControl.SelectedIndex = 11; break;
+						case Keys.E: tabControl.SelectedIndex = 12; break;
+						case Keys.R: tabControl.SelectedIndex = 13; break;
+						case Keys.T: tabControl.SelectedIndex = 14; break;
+						case Keys.Y: tabControl.SelectedIndex = 15; break;
+						case Keys.U: tabControl.SelectedIndex = 16; break;
+						case Keys.I: tabControl.SelectedIndex = 17; break;
+						case Keys.O: tabControl.SelectedIndex = 18; break;
+						case Keys.P: tabControl.SelectedIndex = 19; break;
+					}
 			}
 			else if (e.Modifiers == (Keys.Alt | Keys.Shift))
 			{
-				if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9 && tabControl.TabCount > (e.KeyCode - Keys.D1))
+				if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
 					tabControl.SelectedIndex = e.KeyCode - Keys.D1 + 10;
-				else if (e.KeyCode == Keys.D0 && tabControl.TabCount > 19)
-					tabControl.SelectedIndex = 19;
-				else if (e.KeyCode == Keys.Left && tabControl.SelectedIndex > 0)
-					tabControl.SelectedIndex--;
-				else if (e.KeyCode == Keys.Right && tabControl.SelectedIndex < tabControl.TabCount - 1)
-					tabControl.SelectedIndex++;
+				else switch (e.KeyCode)
+					{
+						case Keys.D0: tabControl.SelectedIndex = 19; break;
+						case Keys.Left:
+							if (tabControl.SelectedIndex > 0)
+								tabControl.SelectedIndex--;
+							break;
+						case Keys.Right:
+							if (tabControl.SelectedIndex < tabControl.TabCount - 1)
+								tabControl.SelectedIndex++;
+							break;
+						case Keys.Q: tabControl.SelectedIndex = 20; break;
+						case Keys.W: tabControl.SelectedIndex = 21; break;
+						case Keys.E: tabControl.SelectedIndex = 22; break;
+						case Keys.R: tabControl.SelectedIndex = 23; break;
+						case Keys.T: tabControl.SelectedIndex = 24; break;
+						case Keys.Y: tabControl.SelectedIndex = 25; break;
+						case Keys.U: tabControl.SelectedIndex = 26; break;
+						case Keys.I: tabControl.SelectedIndex = 27; break;
+						case Keys.O: tabControl.SelectedIndex = 28; break;
+						case Keys.P: tabControl.SelectedIndex = 29; break;
+					}
 			}
 			else if (e.Control && e.Alt)
 			{
@@ -369,11 +389,12 @@ namespace IRCclient
 		{
 			try
 			{
-				if (SelectedGroup.connected != Util.ConnectedState.Disconnected)
-					SelectedGroup.Disconnect();
+				ConnectionGroup sel = SelectedGroup;
+				if (!sel.Disconnected)
+					sel.Disconnect();
 				int begin = tabControl.Controls.IndexOf(SelectedGroup.pLog);
-				int num = NextGroupLocation(SelectedGroup) - begin;
-				connectionGroups.Remove(SelectedGroup);
+				int num = sel.channelPages.Count + 1;
+				connectionGroups.Remove(sel);
 				for (int i = 0; i < num; i++)
 					Util.removeTab(tabControl, begin);
 				tabControl.SelectedIndex = begin;
@@ -431,21 +452,17 @@ namespace IRCclient
 
 		private void chanContext_Opening(object sender, CancelEventArgs e)
 		{
-			if (tabControl.SelectedIndex > SelectedGroupLocation)
-				bAddFav.Enabled = tabControl.SelectedTab.Text.StartsWith("#");
-			else bAddFav.Enabled = false;
+			ChannelPage pChan = tabControl.SelectedTab as ChannelPage;
 
-			if (tabControl.SelectedIndex > SelectedGroupLocation + 1)
+			bAddFav.Enabled = tabControl.SelectedTab.Text.StartsWith("#");
+
+			if (tabControl.SelectedIndex > GroupLocation(SelectedGroup) + 1)
 				bMoveLeft.Enabled = bClose.Enabled = true;
 			else bMoveLeft.Enabled = bCloseServer.Enabled = false;
 
-			if (tabControl.SelectedIndex < NextGroupLocation(SelectedGroup) - 1)
+			if (tabControl.SelectedIndex < GroupEndLocation(SelectedGroup))
 				bMoveRight.Enabled = true;
 			else bMoveRight.Enabled = false;
-		}
-		private void chanContext_Closed(object sender, ToolStripDropDownClosedEventArgs e)
-		{
-			bAddFav.Enabled = bMoveLeft.Enabled = bMoveRight.Enabled = bClose.Enabled = true;
 		}
 		private void bAddFav_Click(object sender, EventArgs e)
 		{
@@ -460,8 +477,8 @@ namespace IRCclient
 		{
 			TabControl.TabPageCollection pcol = tabControl.TabPages;
 			int index = tabControl.SelectedIndex;
-			TabPage pChan = tabControl.SelectedTab;
-			if (index > SelectedGroupLocation + 1)
+			ChannelPage pChan = tabControl.SelectedTab as ChannelPage;
+			if (index > GroupLocation(SelectedGroup) + 1)
 			{
 				pcol.RemoveAt(index);
 				pcol.Insert(index - 1, pChan);
@@ -472,8 +489,8 @@ namespace IRCclient
 		{
 			TabControl.TabPageCollection pcol = tabControl.TabPages;
 			int index = tabControl.SelectedIndex;
-			TabPage pChan = tabControl.SelectedTab;
-			if (index < NextGroupLocation(SelectedGroup) - 1)
+			ChannelPage pChan = tabControl.SelectedTab as ChannelPage;
+			if (pChan != null && index < GroupEndLocation(SelectedGroup))
 			{
 				pcol.RemoveAt(index);
 				pcol.Insert(index + 1, pChan);
@@ -607,20 +624,21 @@ namespace IRCclient
 
 		public ChannelPage FindChan(ConnectionGroup connectionGroup, string channel)
 		{
-			for (int i = tabControl.Controls.IndexOf(connectionGroup.pLog) + 1; ; i++)
+			foreach (ChannelPage pChan in connectionGroup.channelPages)
 			{
-				if (tabControl.Controls[i] is ChannelPage)
-				{
-					if (tabControl.Controls[i].Text == channel)
-						return (ChannelPage)tabControl.Controls[i];
-				}
-				else return null;
+				if (pChan.Text == channel) return pChan;
 			}
+			return null;
 		}
 
 		public void InsertChan(ConnectionGroup cGroup, ChannelPage pChan)
 		{
-			Util.insertTab(tabControl, pChan, NextGroupLocation(cGroup) - 1);
+			Util.insertTab(tabControl, pChan, GroupEndLocation(cGroup));
+		}
+
+		private void chanContext_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+		{
+			bMoveLeft.Enabled = bMoveRight.Enabled;
 		}
 	}
 }

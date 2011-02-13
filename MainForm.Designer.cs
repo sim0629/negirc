@@ -229,7 +229,8 @@
             this.toolStripMenuItem3,
             this.bClose});
 			this.chanContext.Name = "chanContext";
-			this.chanContext.Size = new System.Drawing.Size(196, 104);
+			this.chanContext.Size = new System.Drawing.Size(196, 126);
+			this.chanContext.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.chanContext_Closing);
 			this.chanContext.Opening += new System.ComponentModel.CancelEventHandler(this.chanContext_Opening);
 			// 
 			// bAddFav
