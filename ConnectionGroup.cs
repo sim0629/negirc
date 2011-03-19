@@ -65,6 +65,7 @@ namespace IRCclient
 			this.tLog.TabStop = false;
 			this.tLog.LinkClicked += new LinkClickedEventHandler(tLog_LinkClicked);
 			this.tLog.PreviewKeyDown += new PreviewKeyDownEventHandler(tLine_PreviewKeyDown);
+			this.tLog.LanguageOption = RichTextBoxLanguageOptions.DualFont;
 
 			this.sGroup = sGroup;
 			this.encode = sGroup.encode;

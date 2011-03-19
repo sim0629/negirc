@@ -39,6 +39,7 @@ namespace IRCclient
 			this.tChan.LinkClicked += new LinkClickedEventHandler(MainForm.thisfrm.tLog_LinkClicked);
 			this.tChan.PreviewKeyDown += new PreviewKeyDownEventHandler(MainForm.thisfrm.tLine_PreviewKeyDown);
 			this.tChan.TabStop = false;
+			this.tChan.LanguageOption = RichTextBoxLanguageOptions.DualFont;
 
 			this.userList = new ListBox();
 			this.userList.Dock = DockStyle.Fill;
