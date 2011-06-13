@@ -233,13 +233,49 @@ namespace IRCclient
 				e.Handled = true;
 			}
 		}
+
+		public bool CtrlOrAlt_Key(Keys key)
+		{
+			if (key >= Keys.D1 && key <= Keys.D9)
+			{
+				tabControl.SelectedIndex = key - Keys.D1;
+				return true;
+			}
+			else if (key == Keys.D0)
+			{
+				tabControl.SelectedIndex = 9;
+				return true;
+			}
+			else if (key == Keys.A)
+			{
+				foreach (TabPage page in tabControl.TabPages)
+				{
+					ChannelPage pChan = page as ChannelPage;
+					if (pChan != null && pChan.tChanged == 2)
+					{
+						tabControl.SelectedTab = pChan;
+						return true;
+					}
+				}
+				foreach (TabPage page in tabControl.TabPages)
+				{
+					ChannelPage pChan = page as ChannelPage;
+					if (pChan != null && pChan.tChanged == 1)
+					{
+						tabControl.SelectedTab = pChan;
+						return true;
+					}
+				}
+				return true;
+			}
+			else return false;
+		}
 		public void tLine_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
 		{
 			if (e.Modifiers == Keys.Control)
 			{
-				if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
-					tabControl.SelectedIndex = e.KeyCode - Keys.D1;
-				else switch (e.KeyCode)
+				if (!CtrlOrAlt_Key(e.KeyCode))
+					switch (e.KeyCode)
 					{
 						case Keys.B: tLine.SelectedText += ''; break;
 						case Keys.U: tLine.SelectedText += ''; break;
@@ -256,7 +292,7 @@ namespace IRCclient
 			else if (e.Modifiers == (Keys.Control | Keys.Shift))
 			{
 				if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
-					tabControl.SelectedIndex = e.KeyCode - Keys.D1 + 10;
+					tabControl.SelectedIndex = e.KeyCode - Keys.D1 + 20;
 				else switch (e.KeyCode)
 					{
 						case Keys.Tab:
@@ -269,11 +305,9 @@ namespace IRCclient
 			}
 			else if (e.Modifiers == Keys.Alt)
 			{
-				if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
-					tabControl.SelectedIndex = e.KeyCode - Keys.D1;
-				else switch (e.KeyCode)
+				if (!CtrlOrAlt_Key(e.KeyCode))
+					switch (e.KeyCode)
 					{
-						case Keys.D0: tabControl.SelectedIndex = 9; break;
 						case Keys.Left:
 							if (tabControl.SelectedIndex > 0)
 								tabControl.SelectedIndex--;

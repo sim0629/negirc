@@ -14,6 +14,7 @@ namespace IRCclient
 		public static OptionForm thisfrm = null;
 		private ConnectionGroup con;
 		public List<ServerGroup> Groups;
+		public string passmsg = "PASS";
 		public string usermsg;
 		public string qmsg;
 		public string vermsg;
@@ -48,6 +49,8 @@ namespace IRCclient
 					lineupper = line.ToUpper();
 					if (lineupper.StartsWith("NICK="))
 						defaultNick = line.Substring(5);
+					else if (lineupper.StartsWith("PASS="))
+						passmsg = line.Substring(5);
 					else if (lineupper.StartsWith("USER="))
 						usermsg = line.Substring(5);
 					else if (lineupper.StartsWith("VERSION="))
@@ -90,6 +93,7 @@ namespace IRCclient
 				Groups.Add(new ServerGroup("Freenode", Encoding.UTF8, new List<string> { "irc.freenode.net/8000", "irc.freenode.net&/7000" }, new List<string>()));
 				cEncode.SelectedIndex = 1;
 
+				passmsg = tPass.Text;
 				usermsg = tUser.Text;
 				qmsg = tQuit.Text;
 				vermsg = "Minus One IRC v" + Util.VER;
@@ -103,6 +107,7 @@ namespace IRCclient
 
 				tGroup.SelectedIndex = 0;
 
+				tPass.Text = passmsg;
 				tUser.Text = usermsg;
 				tQuit.Text = qmsg;
 				if (vermsg == null || vermsg.StartsWith("Minus One IRC v")) vermsg = "Minus One IRC v" + Util.VER;
@@ -121,6 +126,7 @@ namespace IRCclient
 				writer = new StreamWriter(path);
 
 				writer.WriteLine("Nick=" + defaultNick);
+				writer.WriteLine("PASS=" + passmsg);
 				writer.WriteLine("USER=" + usermsg);
 				writer.WriteLine("VERSION=" + vermsg);
 				writer.WriteLine("QUIT=" + qmsg);
@@ -162,6 +168,7 @@ namespace IRCclient
 			tGroup.Text = con.Text;
 			tHost.Text = con.host;
 			cEncode.SelectedIndex = EncodeIndex(con.encode);
+			passmsg = tPass.Text;
 			usermsg = tUser.Text;
 			qmsg = tQuit.Text;
 			vermsg = tVersion.Text;
@@ -193,6 +200,7 @@ namespace IRCclient
 				AddHost(tGroup.Text, tHost.Text); 
 				con.sGroup = findGroup(tGroup.Text);
 			}
+			passmsg = tPass.Text;
 			usermsg = tUser.Text;
 			qmsg = tQuit.Text;
 			vermsg = tVersion.Text;

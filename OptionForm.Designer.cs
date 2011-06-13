@@ -33,6 +33,7 @@
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tabOption = new System.Windows.Forms.TabControl();
 			this.pConnect = new System.Windows.Forms.TabPage();
+			this.lSSL = new System.Windows.Forms.Label();
 			this.bcEncode = new System.Windows.Forms.Button();
 			this.bFavorite = new System.Windows.Forms.Button();
 			this.bRemoveServer = new System.Windows.Forms.Button();
@@ -54,7 +55,8 @@
 			this.cLog = new System.Windows.Forms.CheckBox();
 			this.tDefNick = new System.Windows.Forms.TextBox();
 			this.lDefNick = new System.Windows.Forms.Label();
-			this.lSSL = new System.Windows.Forms.Label();
+			this.tPass = new System.Windows.Forms.TextBox();
+			this.lPass = new System.Windows.Forms.Label();
 			this.panel1.SuspendLayout();
 			this.tabOption.SuspendLayout();
 			this.pConnect.SuspendLayout();
@@ -125,6 +127,15 @@
 			this.pConnect.TabIndex = 0;
 			this.pConnect.Text = "Server";
 			this.pConnect.UseVisualStyleBackColor = true;
+			// 
+			// lSSL
+			// 
+			this.lSSL.Location = new System.Drawing.Point(12, 121);
+			this.lSSL.Name = "lSSL";
+			this.lSSL.Size = new System.Drawing.Size(286, 26);
+			this.lSSL.TabIndex = 10;
+			this.lSSL.Text = "To connect with SSL, put && after host name\r\n(e.g. irc.freenode.net&&/7000)";
+			this.lSSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// bcEncode
 			// 
@@ -226,6 +237,8 @@
 			// 
 			// pMessage
 			// 
+			this.pMessage.Controls.Add(this.tPass);
+			this.pMessage.Controls.Add(this.lPass);
 			this.pMessage.Controls.Add(this.tVersion);
 			this.pMessage.Controls.Add(this.lVersion);
 			this.pMessage.Controls.Add(this.tQuit);
@@ -235,14 +248,14 @@
 			this.pMessage.Location = new System.Drawing.Point(4, 22);
 			this.pMessage.Name = "pMessage";
 			this.pMessage.Padding = new System.Windows.Forms.Padding(3);
-			this.pMessage.Size = new System.Drawing.Size(306, 152);
+			this.pMessage.Size = new System.Drawing.Size(306, 192);
 			this.pMessage.TabIndex = 5;
 			this.pMessage.Text = "Message";
 			this.pMessage.UseVisualStyleBackColor = true;
 			// 
 			// tVersion
 			// 
-			this.tVersion.Location = new System.Drawing.Point(76, 43);
+			this.tVersion.Location = new System.Drawing.Point(76, 72);
 			this.tVersion.Name = "tVersion";
 			this.tVersion.Size = new System.Drawing.Size(222, 21);
 			this.tVersion.TabIndex = 3;
@@ -251,7 +264,7 @@
 			// lVersion
 			// 
 			this.lVersion.AutoSize = true;
-			this.lVersion.Location = new System.Drawing.Point(8, 48);
+			this.lVersion.Location = new System.Drawing.Point(8, 77);
 			this.lVersion.Name = "lVersion";
 			this.lVersion.Size = new System.Drawing.Size(58, 12);
 			this.lVersion.TabIndex = 2;
@@ -259,7 +272,7 @@
 			// 
 			// tQuit
 			// 
-			this.tQuit.Location = new System.Drawing.Point(76, 71);
+			this.tQuit.Location = new System.Drawing.Point(76, 100);
 			this.tQuit.Name = "tQuit";
 			this.tQuit.Size = new System.Drawing.Size(222, 21);
 			this.tQuit.TabIndex = 5;
@@ -267,7 +280,7 @@
 			// 
 			// tUser
 			// 
-			this.tUser.Location = new System.Drawing.Point(76, 15);
+			this.tUser.Location = new System.Drawing.Point(76, 44);
 			this.tUser.Name = "tUser";
 			this.tUser.Size = new System.Drawing.Size(222, 21);
 			this.tUser.TabIndex = 1;
@@ -276,7 +289,7 @@
 			// lQuit
 			// 
 			this.lQuit.AutoSize = true;
-			this.lQuit.Location = new System.Drawing.Point(8, 76);
+			this.lQuit.Location = new System.Drawing.Point(8, 105);
 			this.lQuit.Name = "lQuit";
 			this.lQuit.Size = new System.Drawing.Size(33, 12);
 			this.lQuit.TabIndex = 4;
@@ -285,7 +298,7 @@
 			// lUser
 			// 
 			this.lUser.AutoSize = true;
-			this.lUser.Location = new System.Drawing.Point(8, 20);
+			this.lUser.Location = new System.Drawing.Point(8, 49);
 			this.lUser.Name = "lUser";
 			this.lUser.Size = new System.Drawing.Size(37, 12);
 			this.lUser.TabIndex = 0;
@@ -299,7 +312,7 @@
 			this.pOther.Location = new System.Drawing.Point(4, 22);
 			this.pOther.Name = "pOther";
 			this.pOther.Padding = new System.Windows.Forms.Padding(3);
-			this.pOther.Size = new System.Drawing.Size(306, 152);
+			this.pOther.Size = new System.Drawing.Size(306, 192);
 			this.pOther.TabIndex = 6;
 			this.pOther.Text = "Other";
 			this.pOther.UseVisualStyleBackColor = true;
@@ -333,14 +346,22 @@
 			this.lDefNick.TabIndex = 8;
 			this.lDefNick.Text = "Default Nick";
 			// 
-			// lSSL
+			// tPass
 			// 
-			this.lSSL.Location = new System.Drawing.Point(12, 121);
-			this.lSSL.Name = "lSSL";
-			this.lSSL.Size = new System.Drawing.Size(286, 26);
-			this.lSSL.TabIndex = 10;
-			this.lSSL.Text = "To connect with SSL, put && after host name\r\n(e.g. irc.freenode.net&&/7000)";
-			this.lSSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.tPass.Location = new System.Drawing.Point(76, 16);
+			this.tPass.Name = "tPass";
+			this.tPass.Size = new System.Drawing.Size(222, 21);
+			this.tPass.TabIndex = 7;
+			this.tPass.Text = "PASS";
+			// 
+			// lPass
+			// 
+			this.lPass.AutoSize = true;
+			this.lPass.Location = new System.Drawing.Point(8, 21);
+			this.lPass.Name = "lPass";
+			this.lPass.Size = new System.Drawing.Size(37, 12);
+			this.lPass.TabIndex = 6;
+			this.lPass.Text = "PASS";
 			// 
 			// OptionForm
 			// 
@@ -399,5 +420,7 @@
 		private System.Windows.Forms.TextBox tDefNick;
 		private System.Windows.Forms.Label lDefNick;
 		private System.Windows.Forms.Label lSSL;
+		private System.Windows.Forms.TextBox tPass;
+		private System.Windows.Forms.Label lPass;
 	}
 }

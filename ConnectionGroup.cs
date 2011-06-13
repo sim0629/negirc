@@ -83,7 +83,7 @@ namespace IRCclient
 
 		public void sendID(string nick)
 		{
-			net.SendData("PASS pass", true);
+			net.SendData("PASS " + OptionForm.thisfrm.passmsg, true);
 			net.SendData("NICK " + nick, true);
 			net.SendData("USER " + OptionForm.thisfrm.usermsg, true);
 		}
