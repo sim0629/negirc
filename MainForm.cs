@@ -68,7 +68,7 @@ namespace IRCclient
 
 		public MainForm()
 		{
-			new OptionForm();
+			this.Font = (new OptionForm()).fonttemp;
 			new FavoriteForm();
 			InitializeComponent();
 			addNewTab();

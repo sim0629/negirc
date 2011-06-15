@@ -28,6 +28,8 @@ namespace IRCclient
 			foreach (string fav in sGroup.favorites)
 				Util.addItem(lFavorite, fav);
 
+			this.Font = MainForm.thisfrm.Font;
+
 			this.ShowDialog(OptionForm.thisfrm);
 		}
 

@@ -45,6 +45,8 @@
 			this.tHost = new System.Windows.Forms.ComboBox();
 			this.lHost = new System.Windows.Forms.Label();
 			this.pMessage = new System.Windows.Forms.TabPage();
+			this.tPass = new System.Windows.Forms.TextBox();
+			this.lPass = new System.Windows.Forms.Label();
 			this.tVersion = new System.Windows.Forms.TextBox();
 			this.lVersion = new System.Windows.Forms.Label();
 			this.tQuit = new System.Windows.Forms.TextBox();
@@ -55,8 +57,9 @@
 			this.cLog = new System.Windows.Forms.CheckBox();
 			this.tDefNick = new System.Windows.Forms.TextBox();
 			this.lDefNick = new System.Windows.Forms.Label();
-			this.tPass = new System.Windows.Forms.TextBox();
-			this.lPass = new System.Windows.Forms.Label();
+			this.lFont = new System.Windows.Forms.Label();
+			this.fontDialog = new System.Windows.Forms.FontDialog();
+			this.bFont = new System.Windows.Forms.Button();
 			this.panel1.SuspendLayout();
 			this.tabOption.SuspendLayout();
 			this.pConnect.SuspendLayout();
@@ -253,12 +256,29 @@
 			this.pMessage.Text = "Message";
 			this.pMessage.UseVisualStyleBackColor = true;
 			// 
+			// tPass
+			// 
+			this.tPass.Location = new System.Drawing.Point(76, 16);
+			this.tPass.Name = "tPass";
+			this.tPass.Size = new System.Drawing.Size(222, 21);
+			this.tPass.TabIndex = 1;
+			this.tPass.Text = "PASS";
+			// 
+			// lPass
+			// 
+			this.lPass.AutoSize = true;
+			this.lPass.Location = new System.Drawing.Point(8, 21);
+			this.lPass.Name = "lPass";
+			this.lPass.Size = new System.Drawing.Size(37, 12);
+			this.lPass.TabIndex = 0;
+			this.lPass.Text = "PASS";
+			// 
 			// tVersion
 			// 
 			this.tVersion.Location = new System.Drawing.Point(76, 72);
 			this.tVersion.Name = "tVersion";
 			this.tVersion.Size = new System.Drawing.Size(222, 21);
-			this.tVersion.TabIndex = 3;
+			this.tVersion.TabIndex = 5;
 			this.tVersion.Text = "Minus One IRC [ver]";
 			// 
 			// lVersion
@@ -267,7 +287,7 @@
 			this.lVersion.Location = new System.Drawing.Point(8, 77);
 			this.lVersion.Name = "lVersion";
 			this.lVersion.Size = new System.Drawing.Size(58, 12);
-			this.lVersion.TabIndex = 2;
+			this.lVersion.TabIndex = 4;
 			this.lVersion.Text = "VERSION";
 			// 
 			// tQuit
@@ -275,7 +295,7 @@
 			this.tQuit.Location = new System.Drawing.Point(76, 100);
 			this.tQuit.Name = "tQuit";
 			this.tQuit.Size = new System.Drawing.Size(222, 21);
-			this.tQuit.TabIndex = 5;
+			this.tQuit.TabIndex = 7;
 			this.tQuit.Text = "Minus One IRC";
 			// 
 			// tUser
@@ -283,7 +303,7 @@
 			this.tUser.Location = new System.Drawing.Point(76, 44);
 			this.tUser.Name = "tUser";
 			this.tUser.Size = new System.Drawing.Size(222, 21);
-			this.tUser.TabIndex = 1;
+			this.tUser.TabIndex = 3;
 			this.tUser.Text = "minus1 0 * :Minus One";
 			// 
 			// lQuit
@@ -292,7 +312,7 @@
 			this.lQuit.Location = new System.Drawing.Point(8, 105);
 			this.lQuit.Name = "lQuit";
 			this.lQuit.Size = new System.Drawing.Size(33, 12);
-			this.lQuit.TabIndex = 4;
+			this.lQuit.TabIndex = 6;
 			this.lQuit.Text = "QUIT";
 			// 
 			// lUser
@@ -301,11 +321,13 @@
 			this.lUser.Location = new System.Drawing.Point(8, 49);
 			this.lUser.Name = "lUser";
 			this.lUser.Size = new System.Drawing.Size(37, 12);
-			this.lUser.TabIndex = 0;
+			this.lUser.TabIndex = 2;
 			this.lUser.Text = "USER";
 			// 
 			// pOther
 			// 
+			this.pOther.Controls.Add(this.bFont);
+			this.pOther.Controls.Add(this.lFont);
 			this.pOther.Controls.Add(this.cLog);
 			this.pOther.Controls.Add(this.tDefNick);
 			this.pOther.Controls.Add(this.lDefNick);
@@ -322,7 +344,7 @@
 			this.cLog.AutoSize = true;
 			this.cLog.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.cLog.Enabled = false;
-			this.cLog.Location = new System.Drawing.Point(6, 48);
+			this.cLog.Location = new System.Drawing.Point(6, 77);
 			this.cLog.Name = "cLog";
 			this.cLog.Size = new System.Drawing.Size(101, 16);
 			this.cLog.TabIndex = 11;
@@ -331,9 +353,9 @@
 			// 
 			// tDefNick
 			// 
-			this.tDefNick.Location = new System.Drawing.Point(98, 15);
+			this.tDefNick.Location = new System.Drawing.Point(86, 15);
 			this.tDefNick.Name = "tDefNick";
-			this.tDefNick.Size = new System.Drawing.Size(200, 21);
+			this.tDefNick.Size = new System.Drawing.Size(212, 21);
 			this.tDefNick.TabIndex = 9;
 			this.tDefNick.Text = "Nick[-1]";
 			// 
@@ -346,22 +368,24 @@
 			this.lDefNick.TabIndex = 8;
 			this.lDefNick.Text = "Default Nick";
 			// 
-			// tPass
+			// lFont
 			// 
-			this.tPass.Location = new System.Drawing.Point(76, 16);
-			this.tPass.Name = "tPass";
-			this.tPass.Size = new System.Drawing.Size(222, 21);
-			this.tPass.TabIndex = 7;
-			this.tPass.Text = "PASS";
+			this.lFont.AutoSize = true;
+			this.lFont.Location = new System.Drawing.Point(8, 50);
+			this.lFont.Name = "lFont";
+			this.lFont.Size = new System.Drawing.Size(29, 12);
+			this.lFont.TabIndex = 12;
+			this.lFont.Text = "Font";
 			// 
-			// lPass
+			// bFont
 			// 
-			this.lPass.AutoSize = true;
-			this.lPass.Location = new System.Drawing.Point(8, 21);
-			this.lPass.Name = "lPass";
-			this.lPass.Size = new System.Drawing.Size(37, 12);
-			this.lPass.TabIndex = 6;
-			this.lPass.Text = "PASS";
+			this.bFont.Location = new System.Drawing.Point(86, 45);
+			this.bFont.Name = "bFont";
+			this.bFont.Size = new System.Drawing.Size(212, 21);
+			this.bFont.TabIndex = 13;
+			this.bFont.Text = "[Font]";
+			this.bFont.UseVisualStyleBackColor = true;
+			this.bFont.Click += new System.EventHandler(this.bFont_Click);
 			// 
 			// OptionForm
 			// 
@@ -422,5 +446,8 @@
 		private System.Windows.Forms.Label lSSL;
 		private System.Windows.Forms.TextBox tPass;
 		private System.Windows.Forms.Label lPass;
+		private System.Windows.Forms.Button bFont;
+		private System.Windows.Forms.Label lFont;
+		private System.Windows.Forms.FontDialog fontDialog;
 	}
 }

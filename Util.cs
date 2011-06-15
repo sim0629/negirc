@@ -8,7 +8,7 @@ namespace IRCclient
 {
 	public static class Util
 	{
-		public const string VER = "1.1.2.65";
+		public const string VER = "1.1.2.66";
 		public const string clientURL = "http://tail41.snucse.org/program/";
 		public static Color levelColor(int level)
 		{

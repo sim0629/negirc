@@ -11,17 +11,30 @@ namespace IRCclient
 {
 	public partial class OptionForm : Form
 	{
+		/// <summary>
+		/// singleton pattern에서 사용되는 정적 멤버
+		/// </summary>
 		public static OptionForm thisfrm = null;
+
 		private ConnectionGroup con;
 		public List<ServerGroup> Groups;
+		/// <summary> PASS 메시지 </summary>
 		public string passmsg = "PASS";
+		/// <summary> USER 메시지 </summary>
 		public string usermsg;
+		/// <summary> QUIT 메시지 </summary>
 		public string qmsg;
+		/// <summary> CTCP VERSION 메시지 </summary>
 		public string vermsg;
+		/// <summary> 기본 닉 </summary>
 		public string defaultNick;
 
+		public Font fonttemp;
 		private static string path = Application.ProductName + ".ini";
 
+		/// <summary>
+		/// 생성자. singleton pattern을 따른다.
+		/// </summary>
 		public OptionForm()
 		{
 			InitializeComponent();
@@ -32,6 +45,7 @@ namespace IRCclient
 				thisfrm = this;
 		}
 
+		/// <summary> ini파일에서 불러들인다. </summary>
 		private void readAll()
 		{
 			StreamReader reader = null;
@@ -47,7 +61,19 @@ namespace IRCclient
 				while ((line = reader.ReadLine()) != null)
 				{
 					lineupper = line.ToUpper();
-					if (lineupper.StartsWith("NICK="))
+					if (lineupper.StartsWith("FONT="))
+					{
+						try
+						{
+							String[] fontstr = line.Substring(5).Split(',');
+							this.fonttemp = new Font(
+								fontstr[0].Trim(),
+								(float)Convert.ToDouble(fontstr[1]),
+								(FontStyle)(Convert.ToInt32(fontstr[2])));
+						}
+						catch (ArgumentException) { }
+					}
+					else if (lineupper.StartsWith("NICK="))
 						defaultNick = line.Substring(5);
 					else if (lineupper.StartsWith("PASS="))
 						passmsg = line.Substring(5);
@@ -118,6 +144,7 @@ namespace IRCclient
 				else saveAll();
 			}
 		}
+		/// <summary> ini파일에 저장한다. </summary>
 		public void saveAll()
 		{
 			StreamWriter writer = null;
@@ -125,6 +152,8 @@ namespace IRCclient
 			{
 				writer = new StreamWriter(path);
 
+				writer.WriteLine("FONT=" + fonttemp.FontFamily.Name + "," + fonttemp.Size + "," + (int)fonttemp.Style);
+				writer.WriteLine();
 				writer.WriteLine("Nick=" + defaultNick);
 				writer.WriteLine("PASS=" + passmsg);
 				writer.WriteLine("USER=" + usermsg);
@@ -161,6 +190,12 @@ namespace IRCclient
 			}
 		}
 
+		/// <summary>
+		/// ShowDialog대신 사용한다.
+		/// Option중에는 ConnectionGroup에 따라 다른 설정이 저장되어 있는 것이 있으므로
+		/// ConnectionGroup을 인자로 받는다.
+		/// </summary>
+		/// <param name="con"> 현재 지정된 ConnectionGroup </param>
 		public void Open(ConnectionGroup con)
 		{
 			tGroup.SelectedIndex = -1;
@@ -173,7 +208,18 @@ namespace IRCclient
 			qmsg = tQuit.Text;
 			vermsg = tVersion.Text;
 
+			fontDialog.Font = fonttemp = MainForm.thisfrm.Font;
+			fontTextUpdate();
+
+			this.Font = MainForm.thisfrm.Font;
+
 			this.ShowDialog(MainForm.thisfrm);
+		}
+
+		/// <summary> bFont의 텍스트를 업데이트한다. </summary>
+		private void fontTextUpdate()
+		{
+			bFont.Text = fonttemp.FontFamily.Name + ", " + fonttemp.Size + ", " + fonttemp.Style.ToString();
 		}
 
 		private Encoding EncodeIndex(int index)
@@ -200,6 +246,7 @@ namespace IRCclient
 				AddHost(tGroup.Text, tHost.Text); 
 				con.sGroup = findGroup(tGroup.Text);
 			}
+			MainForm.thisfrm.Font = fonttemp;
 			passmsg = tPass.Text;
 			usermsg = tUser.Text;
 			qmsg = tQuit.Text;
@@ -301,6 +348,13 @@ namespace IRCclient
 		private void OptionForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			saveAll();
+		}
+
+		private void bFont_Click(object sender, EventArgs e)
+		{
+			fontDialog.ShowDialog(this);
+			this.fonttemp = fontDialog.Font;
+			fontTextUpdate();
 		}
 	}
 }
